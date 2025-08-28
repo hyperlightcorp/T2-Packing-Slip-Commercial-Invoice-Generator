@@ -20,6 +20,9 @@ export default function LogoutButton() {
   const handleLogout = async () => {
     setLoading(true);
     try {
+      // Clear uploaded file data from localStorage before logout
+      localStorage.removeItem('t2_invoice_data');
+      
       const res = await fetch('/api/logout', { method: 'POST' });
       if (res.ok) {
         window.location.href = '/login';
