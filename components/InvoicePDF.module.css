@@ -1,0 +1,272 @@
+.page {
+  width: 794px;
+  min-height: 1123px;
+  margin: 0 auto;
+  padding: 32px 40px;
+  background-color: white;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.companyInfo {
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.companyInfo strong {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.logo {
+  height: 110px;
+  object-fit: contain;
+}
+
+.title {
+  font-size: 20px;
+  color: #bababa;
+  font-weight: 500;
+  margin: 10px 0 15px 0;
+}
+
+.infoRow {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  font-size: 11px;
+}
+
+.container {
+  background-color: #f9fafb;
+  min-height: 100vh;
+  padding: 40px;
+  font-family: Arial, sans-serif;
+}
+
+.actionBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.downloadButton,
+.backButton {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+}
+
+.downloadButton {
+  background-color: #16a34a;
+  color: white;
+}
+
+.downloadButton:hover {
+  background-color: #15803d;
+}
+
+.backButton {
+  background-color: #1d4ed8;
+  color: #e0ecff;
+}
+
+.backButton:hover {
+  background-color: #12338e;
+}
+
+.invoiceBlock {
+  font-size: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  gap: 4px;
+}
+
+.invoiceRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+  gap: 6px; 
+}
+
+.invoiceLabel {
+  color: #bababa;
+  font-weight: 500;
+  width: 90px; 
+  text-align: left;
+  white-space: pre-line;
+}
+
+.invoiceValue {
+  font-weight: 500;
+  color: #000;
+  min-width: 90px;
+  text-align: left;
+}
+
+.invoiceInput:empty::before {
+  content: attr(data-placeholder);
+  color: #ccc;
+  position: absolute;
+  pointer-events: none;
+}
+.invoiceInput {
+  font-size: 11px;
+  line-height: 1.4;
+  min-height: 1.5em;
+  width: 60px;
+  padding: 0;
+  margin: 0;
+
+  font-family: Arial, sans-serif;
+  color: #000;
+
+  border: none;
+  background: transparent;
+
+  text-align: left;
+  direction: ltr;
+  unicode-bidi: plaintext;
+
+  outline: none;
+  box-sizing: border-box;
+}
+
+.sectionTitle {
+  /* font-weight: bold; */
+  font-size: 13px;
+  margin-bottom: 4px;
+  color: #bababa;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.table th,
+.table td {
+  padding: 6px 10px;
+  border: none;
+  border-bottom: 1px solid #d4d4d4;
+  font-weight: 400;
+  border: none;
+}
+
+.table th {
+  color: #bababa;
+  text-align: left;
+  font-weight: 400;
+  border: none;
+  background-color: #f8f8f8;
+}
+
+.table td:nth-child(4),
+.table td:nth-child(5),
+.table td:nth-child(6),
+.table th:nth-child(4),
+.table th:nth-child(5),
+.table th:nth-child(6) {
+  text-align: right;
+  border: none;
+}
+
+
+.bottomSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 24px;
+  gap: 40px;
+}
+
+.leftBlock {
+  flex: 1;
+  font-size: 11px;
+  color: #555;
+  line-height: 1.5;
+}
+
+.summaryBlock {
+  flex: 1;
+  font-size: 13px;
+  text-align: right;
+  padding-right: 8px;
+  color: #000;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 2px 0;
+  /* border-top: 1px dashed #bbb; */
+}
+
+.dashedLine {
+  border-top: 1px dashed #bbb;
+  margin: 8px 0;
+  display: block; 
+  width: 100%;
+}
+
+.summaryRow:first-child {
+  border-top: none;
+}
+
+.label {
+  color: #bababa;
+}
+
+.balanceDue {
+  font-weight: bold;
+  font-size: 17px;
+  color: #000;
+}
+
+.bottomNote {
+  position: absolute;
+  bottom: 24px;
+  left: 40px;
+  right: 40px;
+  font-size: 9px;
+  color: #999;
+  text-align: left;
+  line-height: 1.4;
+  white-space: pre-line;
+}
+.shipFrom{
+  font-size: 8px;
+  line-height: 1.4;
+  color: #999;
+  margin-bottom: 16px;
+}
+.legalNote {
+  margin-top: 20px;
+  font-size: 8px;
+  color: #999;
+}
+
+.footer {
+  margin-top: 12px;
+  font-size: 11px;
+  color: #999;
+  text-align: left;
+}
