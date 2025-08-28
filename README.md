@@ -1,5 +1,8 @@
 # T2 Packing Slip & Commercial Invoice Generator
 
+🌐 Live Demo: [https://t2-packing-slip-commercial-invoice.vercel.app/](https://t2-packing-slip-commercial-invoice.vercel.app/)
+
+
 A lightweight frontend tool built with Next.js and React to generate **Packing Slip** and **Commercial Invoice** PDFs based on uploaded Excel files. Everything runs in the browser — no backend required.
 
 ## Getting Started
