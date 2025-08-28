@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Lock, LogIn } from 'lucide-react';
 
 // Define the proper Next.js page component type
-export default function LoginPage(): JSX.Element {
+export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
