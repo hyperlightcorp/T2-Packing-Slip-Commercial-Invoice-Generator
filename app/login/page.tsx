@@ -1,19 +1,29 @@
 // app/login/page.tsx
 'use client';
 
-import { useState, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Lock, LogIn } from 'lucide-react';
 
-function LoginForm() {
+export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [redirect, setRedirect] = useState('/');
   
-  const search = useSearchParams();
   const router = useRouter();
-  const redirect = search.get('redirect') || '/';
+
+  // Get redirect parameter on client side only
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirectParam = urlParams.get('redirect');
+      if (redirectParam) {
+        setRedirect(redirectParam);
+      }
+    }
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();

@@ -2,47 +2,70 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Calculate SHA-256 (available in Edge/Middleware)
+// Edge/Node compatible SHA-256 function
 async function sha256(input: string) {
-  const data = new TextEncoder().encode(input);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  if (typeof crypto !== 'undefined' && (crypto as any).subtle) {
+    const data = new TextEncoder().encode(input);
+    const buf = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+  // Fallback for environments without Web Crypto API
+  const { createHash } = await import('crypto');
+  return createHash('sha256').update(input).digest('hex');
 }
 
-export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
-
-  // Released paths: login page, login/logout API, Next static resources
-  const PUBLIC_PATHS = [
-    '/login',
-    '/api/login',
-    '/api/logout',
-  ];
-  if (
-    PUBLIC_PATHS.includes(pathname) ||
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/favicon') ||
-    pathname.startsWith('/public')
-  ) {
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  
+  // Allow access to login page and API routes
+  if (pathname === '/login' || pathname.startsWith('/api/')) {
     return NextResponse.next();
   }
 
-  const cookie = req.cookies.get('auth')?.value;
-  const expected = await sha256(process.env.SITE_PASSWORD || '');
-
-  if (cookie === expected) {
-    return NextResponse.next();
+  // Check authentication
+  const authCookie = request.cookies.get('auth');
+  
+  if (!authCookie) {
+    // Redirect to login with current path as redirect parameter
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('redirect', pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
-  // Not authenticated, redirect to /login
-  const url = req.nextUrl.clone();
-  url.pathname = '/login';
-  url.searchParams.set('redirect', pathname); // Redirect after login
-  return NextResponse.redirect(url);
+  // Verify the auth cookie
+  const sitePassword = process.env.SITE_PASSWORD;
+  if (!sitePassword) {
+    console.error('SITE_PASSWORD environment variable not set');
+    const loginUrl = new URL('/login', request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  try {
+    const expectedHash = await sha256(sitePassword);
+    if (authCookie.value !== expectedHash) {
+      // Invalid auth cookie, redirect to login
+      const loginUrl = new URL('/login', request.url);
+      loginUrl.searchParams.set('redirect', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  } catch (error) {
+    console.error('Error validating auth cookie:', error);
+    const loginUrl = new URL('/login', request.url);
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
 }
 
-// Scope (does not protect static resources)
 export const config = {
-  matcher: ['/((?!_next|favicon.ico).*)'],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - public files (images, etc.)
+     */
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.).*)',
+  ],
 };
