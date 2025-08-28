@@ -23,9 +23,15 @@ export default function LogoutButton() {
       // Clear uploaded file data from localStorage before logout
       localStorage.removeItem('t2_invoice_data');
       
+      // Also clear any other session data
+      localStorage.clear();
+      
       const res = await fetch('/api/logout', { method: 'POST' });
       if (res.ok) {
-        window.location.href = '/login';
+        // Add a small delay to ensure localStorage is cleared before redirect
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 100);
       }
     } catch (error) {
       console.error('Logout failed:', error);

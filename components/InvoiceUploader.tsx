@@ -11,11 +11,25 @@ const InvoiceUploader: React.FC = () => {
 
   // Clear old data on component mount
   useEffect(() => {
-    const existingFile = localStorage.getItem('t2_invoice_data');
-    if (existingFile) {
-      setUploadedFile('Previously uploaded file');
+    // Check if data exists and is valid
+    const existingData = localStorage.getItem('t2_invoice_data');
+    if (existingData) {
+      try {
+        const parsedData = JSON.parse(existingData);
+        if (parsedData && Array.isArray(parsedData) && parsedData.length > 0) {
+          setUploadedFile('Previously uploaded file');
+        } else {
+          // Clear invalid data
+          localStorage.removeItem('t2_invoice_data');
+          setUploadedFile(null);
+        }
+      } catch (error) {
+        // Clear corrupted data
+        localStorage.removeItem('t2_invoice_data');
+        setUploadedFile(null);
+      }
     } else {
-      localStorage.removeItem('t2_invoice_data');
+      setUploadedFile(null);
     }
   }, []);
 
