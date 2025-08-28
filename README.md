@@ -38,7 +38,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ## Project Structure
 
 ```
-invoice-app/
+T2-Packing-Slip-Commercial-Invoice-Generator/
 ├── app/
 │   ├── InvoicePDF/            # Commercial Invoice PDF page
 │   ├── PackingSlipPDF/        # Packing Slip PDF page
