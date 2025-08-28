@@ -22,9 +22,11 @@ const InvoicePDF: React.FC = () => {
   const [invoiceDate, setInvoiceDate] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [items, setItems] = useState<AggregatedRow[]>([]);
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const pdfRef = useRef<HTMLDivElement>(null);
+  
   const formatAmount = (value: number): string => {
-  return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   };
 
   // Format date from various formats to MM/DD/YYYY
@@ -103,9 +105,20 @@ const InvoicePDF: React.FC = () => {
     setDueDate(due);
   }, [invoiceDate]);
 
-  // Handle PDF download
-  // This function captures the rendered PDF content and generates a downloadable PDF file
+  // Handle PDF download with invoice number validation
   const handleDownload = async () => {
+    // Check if invoice number is empty
+    if (!invoiceNumber.trim()) {
+      setShowConfirmDialog(true);
+      return;
+    }
+    
+    // Proceed with download
+    await generatePDF();
+  };
+
+  // Function to generate and download PDF
+  const generatePDF = async () => {
     if (!pdfRef.current) return;
     const canvas = await html2canvas(pdfRef.current, { scale: 2 });
     const imgData = canvas.toDataURL('image/png');
@@ -115,6 +128,17 @@ const InvoicePDF: React.FC = () => {
     pdf.addImage(imgData, 'PNG', 0, 0, width, height);
     pdf.save(`CI${invoiceNumber || 'NA'}.pdf`);
   };
+
+  // Handle confirmation dialog actions
+  const handleConfirmDownload = async () => {
+    setShowConfirmDialog(false);
+    await generatePDF();
+  };
+
+  const handleCancelDownload = () => {
+    setShowConfirmDialog(false);
+  };
+
   // Calculate the subtotal from the items
   // This function sums up the amount for each item in the invoice
   const subtotal = items.reduce((sum, row) => sum + row.amount, 0);
@@ -123,6 +147,35 @@ const InvoicePDF: React.FC = () => {
   // This part constructs the PDF layout with company info, invoice details, and itemized table
   return (
     <div className={styles.container}>
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-md mx-4 shadow-xl">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">
+              Missing Commercial Invoice Number
+            </h3>
+            <p className="text-gray-600 mb-6">
+              You haven't entered a commercial invoice number. The PDF will be saved as "CINA.pdf". 
+              Do you want to continue or go back to enter an invoice number?
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={handleCancelDownload}
+                className="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmDownload}
+                className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+              >
+                Download Anyway
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className={styles.actionBar}>
         <button onClick={() => window.location.href = '/'} className={styles.backButton}>
           ← Back to Main
@@ -131,12 +184,7 @@ const InvoicePDF: React.FC = () => {
           Download PDF
         </button>
       </div>
-      {/* Download button to trigger PDF generation */}
-      {/* <div className={styles.downloadButtonWrapper}>
-        <button onClick={handleDownload} className={styles.downloadButton}>
-          Download PDF
-        </button>
-      </div> */}
+      
       {/* PDF content wrapper */}
       <div ref={pdfRef} className={styles.page}>
         {/* HEADER */}
@@ -261,8 +309,8 @@ const InvoicePDF: React.FC = () => {
           </div> 
         </div>
         <div className={styles.bottomNote}>
-          Buyer’s acceptance of these goods constitutes acceptance by Buyer of Seller’s terms and conditions of sale.
-          Such terms may not be modified without Seller’s prior written consent. These terms and conditions do not modify
+          Buyer's acceptance of these goods constitutes acceptance by Buyer of Seller's terms and conditions of sale.
+          Such terms may not be modified without Seller's prior written consent. These terms and conditions do not modify
           or supersede the terms of any pre-existing written contract between Buyer and Seller. Full terms and
           conditions may be found at https://hyperlightcorp.com/SalesTC.<br />
           Page 1 of 1
@@ -271,5 +319,6 @@ const InvoicePDF: React.FC = () => {
     </div>
   );
 };
+
 // Export the InvoicePDF component for use in other parts of the application
 export default InvoicePDF;
