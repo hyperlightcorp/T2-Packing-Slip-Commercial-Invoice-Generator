@@ -179,12 +179,13 @@
   background-color: #f8f8f8;
 }
 
-.table td:nth-child(4),
+/* Updated: Only QTY, RATE, AMOUNT columns (5th, 6th, 7th) should be right-aligned */
 .table td:nth-child(5),
 .table td:nth-child(6),
-.table th:nth-child(4),
+.table td:nth-child(7),
 .table th:nth-child(5),
-.table th:nth-child(6) {
+.table th:nth-child(6),
+.table th:nth-child(7) {
   text-align: right;
   border: none;
 }
