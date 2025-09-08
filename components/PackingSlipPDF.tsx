@@ -9,6 +9,7 @@ import styles from './PackingSlipPDF.module.css';
 interface LineData {
   date: string;
   item: string;
+  po: string;
   description: string;
   gelpak: string;
   lot: string;
@@ -58,15 +59,16 @@ const PackingSlipPDF: React.FC = () => {
         formatted = `${m}/${d}/${y}`;
         }
 
-        // Return the formatted line item
+        // Return the formatted line item with new PO# column
         return {
         date: formatted,
         item: row[1],
-        description: row[2],
-        gelpak: row[3],
-        lot: row[4],
-        wafer: row[5],
-        qty: row[6],
+        po: row[2],
+        description: row[3],
+        gelpak: row[4],
+        lot: row[5],
+        wafer: row[6],
+        qty: row[7],
         };
     });
     // Filter out any rows that do not have an item or are empty
@@ -212,6 +214,7 @@ const PackingSlipPDF: React.FC = () => {
             <tr>
               <th>Date</th>
               <th>Item</th>
+              <th>PO#</th>
               <th>Description</th>
               <th>GelPak #</th>
               <th>Lot #</th>
@@ -225,6 +228,7 @@ const PackingSlipPDF: React.FC = () => {
               <tr key={idx}>
                 <td>{row.date}</td>
                 <td><strong>{row.item}</strong></td>
+                <td><strong>{row.po}</strong></td>
                 <td>{row.description}</td>
                 <td><strong>{row.gelpak}</strong></td>
                 <td><strong>{row.lot}</strong></td>

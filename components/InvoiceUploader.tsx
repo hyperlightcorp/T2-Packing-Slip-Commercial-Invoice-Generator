@@ -193,7 +193,7 @@ const InvoiceUploader: React.FC = () => {
               <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5 flex-shrink-0" />
               <div className="text-sm text-gray-700">
                 <p className="font-medium mb-2">Expected Excel format:</p>
-                <p className="text-xs">DATE | ITEM | DESCRIPTION | GELPAK# | Lot # | Wafer # | QTY | Rate</p>
+                <p className="text-xs">DATE | ITEM | PO# | DESCRIPTION | GELPAK# | Lot # | Wafer # | QTY | Rate</p>
               </div>
             </div>
           </div>

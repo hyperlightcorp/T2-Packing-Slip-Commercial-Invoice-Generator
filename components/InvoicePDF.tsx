@@ -9,6 +9,7 @@ import styles from './InvoicePDF.module.css';
 interface AggregatedRow {
   date: string;
   item: string;
+  po: string;
   description: string;
   qty: number;
   rate: number;
@@ -66,9 +67,10 @@ const InvoicePDF: React.FC = () => {
     rows.forEach((row: any[], index: number) => {
       const rawDate = row[0];
       const item = row[1];
-      const desc = row[2];
-      const qty = Number(row[6]); // QTY column
-      const rate = Number(row[7]); // RATE column
+      const po = row[2];
+      const desc = row[3];
+      const qty = Number(row[7]); // QTY column (now at index 7)
+      const rate = Number(row[8]); // RATE column (now at index 8)
       const formattedDate = formatDate(rawDate);
 
       if (index === 0) {
@@ -79,6 +81,7 @@ const InvoicePDF: React.FC = () => {
         grouped.set(item, {
           date: formattedDate,
           item,
+          po,
           description: desc,
           qty,
           rate,
@@ -251,6 +254,7 @@ const InvoicePDF: React.FC = () => {
             <tr>
               <th>DATE</th>
               <th>ITEM</th>
+              <th>PO#</th>
               <th>DESCRIPTION</th>
               <th>QTY</th>
               <th>RATE</th>
@@ -263,6 +267,7 @@ const InvoicePDF: React.FC = () => {
               <tr key={i}>
                 <td>{row.date}</td>
                 <td>{row.item}</td>
+                <td>{row.po}</td>
                 <td>{row.description}</td>
                 <td>{row.qty}</td>
                 <td>{formatAmount(row.rate)}</td>
