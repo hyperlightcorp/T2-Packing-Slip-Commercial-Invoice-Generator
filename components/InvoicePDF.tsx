@@ -256,9 +256,9 @@ const InvoicePDF: React.FC = () => {
               <th>ITEM</th>
               <th>PO#</th>
               <th>DESCRIPTION</th>
-              <th>QTY</th>
-              <th>RATE</th>
-              <th>AMOUNT</th>
+              <th style={{ textAlign: 'right' }}>QTY</th>
+              <th style={{ textAlign: 'right' }}>RATE</th>
+              <th style={{ textAlign: 'right' }}>AMOUNT</th>
             </tr>
           </thead>
           {/* Table body with aggregated items */}
@@ -269,9 +269,9 @@ const InvoicePDF: React.FC = () => {
                 <td>{row.item}</td>
                 <td>{row.po}</td>
                 <td>{row.description}</td>
-                <td>{row.qty}</td>
-                <td>{formatAmount(row.rate)}</td>
-                <td>{formatAmount(row.amount)}</td>
+                <td style={{ textAlign: 'right' }}>{row.qty}</td>
+                <td style={{ textAlign: 'right' }}>{formatAmount(row.rate)}</td>
+                <td style={{ textAlign: 'right' }}>{formatAmount(row.amount)}</td>
               </tr>
             ))}
           </tbody>
