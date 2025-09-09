@@ -216,6 +216,7 @@ const InvoicePDF: React.FC = () => {
           </div>
           <div>
             <div className={styles.sectionTitle}>SHIP TO</div>
+            {/* ship to changed address */}
               <div>Ms. Wichaporn Nusen</div>
               <div>Fabrinet Co., Ltd</div>
               <div>5/6 Moo 6, Soi Khunpra, Phaholyothin Rd,</div>
