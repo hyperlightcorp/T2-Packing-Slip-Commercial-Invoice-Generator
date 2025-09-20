@@ -188,13 +188,13 @@ const PackingSlipPDF: React.FC = () => {
               <div>OYAMA-SHI TOCHIGI, Japan, 3238511</div>
               <div>TEL +81-50-3467-8577</div>
             {/* ship to changed address */}
-              {/* <div>Ms. Wichaporn Nusen</div>
+              <div>Ms. Wichaporn Nusen</div>
               <div>Fabrinet Co., Ltd</div>
               <div>5/6 Moo 6, Soi Khunpra, Phaholyothin Rd,</div>
               <div>Klongnueng, Klongluang,</div>
               <div>Patumthanee 12120, Thailand</div>
               <div>EMAIL: wichapornn@fabrinet.co.th</div>
-              <div>TEL: +6625249600 (Ext:6352)</div> */}
+              <div>TEL: +6625249600 (Ext:6352)</div>
             </div>
           </div>
           <div className={styles.invoiceBlock}>
