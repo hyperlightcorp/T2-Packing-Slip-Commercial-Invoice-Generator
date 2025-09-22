@@ -182,11 +182,11 @@ const PackingSlipPDF: React.FC = () => {
           <div>
             <div className={styles.sectionTitle}>SHIP TO</div>
             <div className={styles.sectionContent}>
-              <div>Mr. Sumio Takahashi</div>
+              {/* <div>Mr. Sumio Takahashi</div>
               <div>FUJITSU OPTICAL COMPONENTS LIMITED</div>
               <div>3-28-1 JYOHTOH</div>
               <div>OYAMA-SHI TOCHIGI, Japan, 3238511</div>
-              <div>TEL +81-50-3467-8577</div>
+              <div>TEL +81-50-3467-8577</div> */}
             {/* ship to changed address */}
               <div>Ms. Wichaporn Nusen</div>
               <div>Fabrinet Co., Ltd</div>
