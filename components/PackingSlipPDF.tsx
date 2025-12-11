@@ -187,8 +187,8 @@ const PackingSlipPDF: React.FC = () => {
               <div>5/6 Moo 6, Tambol Klong Nueng,</div>
               <div>Amphur Klongluang, Pathumtani Province</div>
               <div>12120 Thailand</div>
-              {/* <div>Mr. Sumio Takahashi</div> */}
               {/* <div>FUJITSU OPTICAL COMPONENTS LIMITED</div> */}
+              {/* <div>Mr. Sumio Takahashi</div> */}
               {/* <div>Furukawa FITEL Optical Components Co., LTD</div>
               <div>3-28-1 JYOHTOH</div>
               <div>OYAMA-SHI TOCHIGI, Japan, 3238511</div>
