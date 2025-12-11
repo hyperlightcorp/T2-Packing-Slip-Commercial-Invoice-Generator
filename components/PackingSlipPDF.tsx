@@ -173,10 +173,15 @@ const PackingSlipPDF: React.FC = () => {
             <div className={styles.infoColumn}>
             <div className={styles.sectionTitle}>BILL TO</div>
             <div className={styles.sectionContent}>
-              <div>Fujitsu North America Inc.</div>
+              <div>Fujitsu North America, Inc.</div>
+              <div>17201 Waterview Pkwy</div>
+              <div>Dallas, TX 75252</div>
+              <div>USA</div>
+              <div>accounts.payable.ca@fujitsu.com</div>
+              {/* <div>Fujitsu North America Inc.</div>
               <div>2801 Telecom Parkway</div>
               <div>Fujitsu North America, Inc.</div>
-              <div>Richardson, TX 75082 USA</div>
+              <div>Richardson, TX 75082 USA</div> */}
             </div>
           </div>
           <div>
