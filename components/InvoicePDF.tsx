@@ -216,12 +216,17 @@ const InvoicePDF: React.FC = () => {
           </div>
           <div>
             <div className={styles.sectionTitle}>SHIP TO</div>
-            <div>Mr. Sumio Takahashi</div>
+              <div>Nittra Charoenwong (66-2524-9600 ext.64)</div>
+              <div>Fabrinet Co., Ltd.</div>
+              <div>5/6 Moo 6, Tambol Klong Nueng,</div>
+              <div>Amphur Klongluang, Pathumtani Province</div>
+              <div>12120 Thailand</div>
+            {/* <div>Mr. Sumio Takahashi</div> */}
             {/* <div>FUJITSU OPTICAL COMPONENTS LIMITED</div> */}
-            <div>Furukawa FITEL Optical Components Co., LTD</div>
+            {/* <div>Furukawa FITEL Optical Components Co., LTD</div>
             <div>3-28-1 JYOHTOH</div>
             <div>OYAMA-SHI TOCHIGI, Japan, 3238511</div>
-            <div>TEL +81-50-3467-8577</div>
+            <div>TEL +81-50-3467-8577</div> */}
             {/* ship to changed address */}
               {/* <div>Ms. Wichaporn Nusen</div>
               <div>Fabrinet Co., Ltd</div>
