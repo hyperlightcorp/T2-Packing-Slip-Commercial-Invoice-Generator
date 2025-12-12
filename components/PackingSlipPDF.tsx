@@ -17,6 +17,91 @@ interface LineData {
   qty: number;
 }
 
+// Address interfaces
+interface Address {
+  id: string;
+  label: string;
+  lines: string[];
+}
+
+// Predefined Bill To addresses
+const BILL_TO_ADDRESSES: Address[] = [
+  {
+    id: 'fujitsu-dallas',
+    label: 'Fujitsu - Dallas (Waterview)',
+    lines: [
+      'Fujitsu North America, Inc.',
+      '17201 Waterview Pkwy',
+      'Dallas, TX 75252',
+      'USA',
+      'accounts.payable.ca@fujitsu.com',
+    ],
+  },
+  {
+    id: 'fujitsu-richardson',
+    label: 'Fujitsu - Richardson (Telecom)',
+    lines: [
+      'Fujitsu North America, Inc.',
+      '2801 Telecom Parkway',
+      'Richardson, TX 75082',
+      'USA',
+    ],
+  },
+  {
+    id: 'fujitsu-richardson-2',
+    label: 'Fujitsu - Richardson (Telecom) Alt',
+    lines: [
+      'Fujitsu North America, Inc.',
+      '2801 Telecom Parkway',
+      'Richardson, TX 75082',
+      'USA',
+    ],
+  },
+];
+
+// Predefined Ship To addresses
+const SHIP_TO_ADDRESSES: Address[] = [
+  {
+    id: 'fabrinet-nittra',
+    label: 'Fabrinet - Nittra (Thailand)',
+    lines: [
+      'Nittra Charoenwong (66-2524-9600 ext.64)',
+      'Fabrinet Co., Ltd.',
+      '5/6 Moo 6, Tambol Klong Nueng,',
+      'Amphur Klongluang, Pathumtani Province',
+      '12120 Thailand',
+    ],
+  },
+  {
+    id: 'furukawa-japan',
+    label: 'Furukawa FITEL - Japan',
+    lines: [
+      'Mr. Sumio Takahashi',
+      'Furukawa FITEL Optical Components Co., LTD',
+      '3-28-1 JYOHTOH',
+      'OYAMA-SHI TOCHIGI, Japan, 3238511',
+      'TEL +81-50-3467-8577',
+    ],
+  },
+  {
+    id: 'fabrinet-wichaporn',
+    label: 'Fabrinet - Wichaporn (Thailand)',
+    lines: [
+      'Ms. Wichaporn Nusen',
+      'Fabrinet Co., Ltd',
+      '5/6 Moo 6, Soi Khunpra, Phaholyothin Rd,',
+      'Klongnueng, Klongluang,',
+      'Patumthanee 12120, Thailand',
+      'EMAIL: wichapornn@fabrinet.co.th',
+      'TEL: +6625249600 (Ext:6352)',
+    ],
+  },
+];
+
+// Default address indices (second set = index 1)
+const DEFAULT_BILL_TO_INDEX = 1;
+const DEFAULT_SHIP_TO_INDEX = 1;
+
 // PackingSlipPDF component
 // This component generates a packing slip PDF from the provided data (EXCEL format).
 const PackingSlipPDF: React.FC = () => {
@@ -24,6 +109,8 @@ const PackingSlipPDF: React.FC = () => {
   const [date, setDate] = useState('N/A');
   const [lines, setLines] = useState<LineData[]>([]);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [selectedBillTo, setSelectedBillTo] = useState<Address>(BILL_TO_ADDRESSES[DEFAULT_BILL_TO_INDEX]);
+  const [selectedShipTo, setSelectedShipTo] = useState<Address>(SHIP_TO_ADDRESSES[DEFAULT_SHIP_TO_INDEX]);
   const pageRef = useRef<HTMLDivElement>(null);
 
   // Parse Excel data from localStorage and format dates when the component mounts
@@ -111,6 +198,17 @@ const PackingSlipPDF: React.FC = () => {
     setShowConfirmDialog(false);
   };
 
+  // Handle address selection changes
+  const handleBillToChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = BILL_TO_ADDRESSES.find(addr => addr.id === e.target.value);
+    if (selected) setSelectedBillTo(selected);
+  };
+
+  const handleShipToChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selected = SHIP_TO_ADDRESSES.find(addr => addr.id === e.target.value);
+    if (selected) setSelectedShipTo(selected);
+  };
+
   // Render the packing slip PDF component
   // This includes the download button, header, company information, billing and shipping details, and the table of items.
   return (
@@ -152,6 +250,40 @@ const PackingSlipPDF: React.FC = () => {
           Download PDF
         </button>
       </div>
+
+      {/* Address Selection Controls */}
+      <div className={styles.addressSelectionBar}>
+        <div className={styles.addressSelectGroup}>
+          <label htmlFor="billToSelect">Bill To:</label>
+          <select
+            id="billToSelect"
+            value={selectedBillTo.id}
+            onChange={handleBillToChange}
+            className={styles.addressSelect}
+          >
+            {BILL_TO_ADDRESSES.map((addr) => (
+              <option key={addr.id} value={addr.id}>
+                {addr.label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className={styles.addressSelectGroup}>
+          <label htmlFor="shipToSelect">Ship To:</label>
+          <select
+            id="shipToSelect"
+            value={selectedShipTo.id}
+            onChange={handleShipToChange}
+            className={styles.addressSelect}
+          >
+            {SHIP_TO_ADDRESSES.map((addr) => (
+              <option key={addr.id} value={addr.id}>
+                {addr.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
       
       {/* Main content of the packing slip */}
       <div className={styles.page} ref={pageRef}>
@@ -173,40 +305,17 @@ const PackingSlipPDF: React.FC = () => {
             <div className={styles.infoColumn}>
             <div className={styles.sectionTitle}>BILL TO</div>
             <div className={styles.sectionContent}>
-              <div>Fujitsu North America, Inc.</div>
-              <div>17201 Waterview Pkwy</div>
-              <div>Dallas, TX 75252</div>
-              <div>USA</div>
-              <div>accounts.payable.ca@fujitsu.com</div>
-              {/* <div>Fujitsu North America Inc.</div>
-              <div>2801 Telecom Parkway</div>
-              <div>Fujitsu North America, Inc.</div>
-              <div>Richardson, TX 75082 USA</div> */}
+              {selectedBillTo.lines.map((line, idx) => (
+                <div key={idx}>{line}</div>
+              ))}
             </div>
           </div>
           <div>
             <div className={styles.sectionTitle}>SHIP TO</div>
             <div className={styles.sectionContent}>
-              
-              {/* <div>FUJITSU OPTICAL COMPONENTS LIMITED</div> */}
-              {/* <div>Mr. Sumio Takahashi</div> */}
-              {/* <div>Furukawa FITEL Optical Components Co., LTD</div>
-              <div>3-28-1 JYOHTOH</div>
-              <div>OYAMA-SHI TOCHIGI, Japan, 3238511</div>
-              <div>TEL +81-50-3467-8577</div> */}
-              <div>Nittra Charoenwong (66-2524-9600 ext.64)</div>
-              <div>Fabrinet Co., Ltd.</div>
-              <div>5/6 Moo 6, Tambol Klong Nueng,</div>
-              <div>Amphur Klongluang, Pathumtani Province</div>
-              <div>12120 Thailand</div>
-            {/* ship to changed address */}
-              {/* <div>Ms. Wichaporn Nusen</div>
-              <div>Fabrinet Co., Ltd</div>
-              <div>5/6 Moo 6, Soi Khunpra, Phaholyothin Rd,</div>
-              <div>Klongnueng, Klongluang,</div>
-              <div>Patumthanee 12120, Thailand</div>
-              <div>EMAIL: wichapornn@fabrinet.co.th</div>
-              <div>TEL: +6625249600 (Ext:6352)</div> */}
+              {selectedShipTo.lines.map((line, idx) => (
+                <div key={idx}>{line}</div>
+              ))}
             </div>
           </div>
           <div className={styles.invoiceBlock}>
